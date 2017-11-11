@@ -1,0 +1,20 @@
+wp:
+    image: image/wordpress
+    restarts: always
+    environment: 
+        WORDPRESS_DB_HOST: "127.0.0.1"
+        WORDPRESS_DB_USER: "user" # por definir, todavia no nos han dado los datos.
+        WORDPRESS_DB_PASSWORD: "password" # por definir, todavía no nos han dado los datos
+    
+db:
+    image: mysql:5.7
+    restarts: always
+    volumes:
+        database/:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: "root" # Por definir
+        MYSQL_DATABASE: "wordpress" 
+        MYSQL_USER: "user" # Por definir
+        MYSQL_PASSWORD: "password" # Por definir
+    
+        

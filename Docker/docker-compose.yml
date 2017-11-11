@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+    wp:
+        image: library/wordpress
+        restart: always
+        links:
+            - db:mysql
+        ports:
+            - 8080:80
+        environment: 
+            WORDPRESS_DB_USER: user # por definir, todavia no nos han dado los datos.
+            WORDPRESS_DB_PASSWORD: password # por definir, todavía no nos han dado los datos
+    
+    db:
+        image: mysql:5.7
+        restart: always
+        volumes:
+            - ./database/:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: password # Por definir
+            MYSQL_DATABASE: wordpress
+            MYSQL_USER: user # Por definir
+            MYSQL_PASSWORD: password # Por definir
+        
+            
