@@ -1,26 +1,33 @@
 version: '2'
 
 services:
-    wp:
-        image: library/wordpress
-        restart: always
-        links:
-            - db:db
+    mariadb:
+        image: bitnami/mariadb:latest
+        ports:
+            - 3306:3306
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+            - MARIADB_DATABASE=splc2017
+
+    phpMyAdmin:
+        image: bitnami/phpmyadmin
         ports:
             - 8080:80
-        environment: 
-            WORDPRESS_DB_USER: user # por definir, todavia no nos han dado los datos.
-            WORDPRESS_DB_PASSWORD: password # por definir, todavía no nos han dado los datos
-    
-    db:
-        image: mysql:5.7
-        restart: always
-        volumes:
-            - ./database/:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: password # Por definir
-            MYSQL_DATABASE: wordpress
-            MYSQL_USER: user # Por definir
-            MYSQL_PASSWORD: password # Por definir
+        depends_on:
+            - mariadb
         
-            
+    wordpress:
+        image: bitnami/wordpress
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./wordpress_data:/bitnami
+        depends_on:
+            - mariadb
+        environment:
+            - MARIADB_HOST=mariadb
+            - ALLOW_EMPTY_PASSWORD=yes
+            - WORDPRESS_DATABASE_NAME=splc2017
+            - WORDPRESS_DATABASE_USER=root
+            - WORDPRESS_DATABASE_PASSWORD=''
