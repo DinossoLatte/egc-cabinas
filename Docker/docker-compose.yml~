@@ -2,9 +2,11 @@ version: '2'
 
 services:
     mariadb:
-        image: bitnami/mariadb:latest
+        image: bitnami/mariadb
         ports:
             - 3306:3306
+        volumes:
+            - ./mariadb_data:/bitnami
         environment:
             - ALLOW_EMPTY_PASSWORD=yes
             - MARIADB_DATABASE=splc2017
@@ -12,7 +14,7 @@ services:
     phpMyAdmin:
         image: bitnami/phpmyadmin
         ports:
-            - 8080:80
+            - 90:80
         depends_on:
             - mariadb
         
